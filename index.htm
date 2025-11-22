@@ -3,22 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FlowMind – เมนูหลัก</title>
+<title>FlowMind — หน้าแรก</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
   <div class="card">
-    <h1>ยินดีต้อนรับ, <span id="nameShow"></span></h1>
-    <p class="lead">เลือกเมนูที่ต้องการใช้งาน</p>
-
-    <a class="btn" href="schedule.html">📘 ตารางเรียน</a>
-    <a class="btn" href="tasks.html">📝 จัดลำดับงาน</a>
+    <h1 id="greetText">สวัสดี!</h1>
+    <p class="lead">พร้อมหรือยัง? ไปจัดตารางเรียนกันเลย</p>
+    <div class="row">
+      <button id="toSchedule" class="btn">ไปจัดตารางเรียน</button>
+      <button id="editName" class="btn secondary">แก้ชื่อเล่น</button>
+    </div>
   </div>
 </div>
 
 <script>
-document.getElementById("nameShow").innerText = localStorage.getItem("fm_name") || "ผู้ใช้";
+function updateGreeting(){
+  const name = localStorage.getItem('flow_nickname')||'';
+  document.getElementById('greetText').textContent = `สวัสดี ${name}! 🎉`;
+}
+updateGreeting();
+
+document.getElementById('editName').addEventListener('click',()=>{
+  window.location.href='start.html';
+});
+document.getElementById('toSchedule').addEventListener('click',()=>{
+  window.location.href='schedule.html';
+});
 </script>
 </body>
 </html>
