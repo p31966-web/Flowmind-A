@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FlowMind — เริ่มต้น</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h1>สวัสดี! 😊</h1>
+    <p class="lead">ก่อนเริ่มใช้งาน FlowMind กรุณาใส่ชื่อเล่น</p>
+    <input id="nickname" type="text" placeholder="เช่น บีน, นัท">
+    <div class="row">
+      <button id="startBtn" class="btn">เริ่มใช้งาน</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const nicknameInput = document.getElementById('nickname');
+const savedName = localStorage.getItem('flow_nickname');
+if(savedName) nicknameInput.value = savedName;
+
+document.getElementById('startBtn').addEventListener('click',()=>{
+  const name = nicknameInput.value.trim();
+  if(!name){ alert('กรุณาใส่ชื่อเล่น'); return; }
+  localStorage.setItem('flow_nickname',name);
+  window.location.href='index.html';
+});
+</script>
+</body>
+</html>
+
