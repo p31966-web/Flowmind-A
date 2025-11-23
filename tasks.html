@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FlowMind — งาน</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2>ป้อนงานหลายชิ้นพร้อมกัน</h2>
+    <div id="taskInputs"></div>
+    <div class="row" style="margin-top:10px">
+      <button id="addTaskRow" class="btn">เพิ่มงาน</button>
+      <button id="saveTasks" class="btn">บันทึกงานทั้งหมด</button>
+      <button id="toPriority" class="btn secondary">ดูลำดับงาน</button>
+    </div>
+    <div id="priorityList" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<script>
+// Tasks
+function loadTasks(){ return JSON.parse(localStorage.getItem('flow_tasks')||'[]'); }
+function saveTasks(tasks){ localStorage.setItem('flow_tasks',JSON.stringify(tasks)); }
+
+function addTaskRow(task){
+  const container=document.getElementById('taskInputs');
+  const row=document.createElement('div');
+  row.className='task-row';
+  row.innerHTML=`
+  <input type="text" class="taskSubject" placeholder="ชื่อวิชา" value="${task?.subject||''}" required>
+  <input type="text" class="taskTitle" placeholder="ชื่องาน" value="${task?.title||''}" required>
+  <input type="date" class="taskDue" value="${task?.due||''}" required>
+  <select class="taskDiff">
+    <option value="1" ${task?.diff==1?'selected':''}>ง่าย</option>
+    <option value="2" ${task?.diff==2?'selected':''}>ปานกลาง</option>
+    <option value="3" ${task?.diff==3?'selected':''}>ยาก</option>
+  </select>
+  <button class="btn secondary removeRowBtn">ลบ</button>
+  `;
+  container.appendChild(row);
+  row.querySelector('.removeRowBtn').addEventListener('click',()=>row.remove());
+}
+
+// init
+const savedTasks=loadTasks();
+if(savedTasks.length) savedTasks.forEach(t=>addTaskRow(t));
+else addTaskRow();
+
+document.getElementById('addTaskRow').addEventListener('click',()=>addTaskRow());
+
+document.getElementById('saveTasks').addEventListener('click',()=>{
+  const rows=document.querySelectorAll('.task-row');
+  const tasks=[];
+  rows.forEach(r=>{
+    const subject=r.querySelector('.taskSubject').value.trim();
+    const title=r.querySelector('.taskTitle').value.trim();
+    const due=r.querySelector('.taskDue').value;
+    const diff=parseInt(r.querySelector('.taskDiff').value);
+    if(subject && title && due) tasks.push({subject,title,due,diff});
+  });
+  saveTasks(tasks);
+  alert('บันทึกงานเรียบร้อย ✅');
+});
+
+document.getElementById('toPriority').addEventListener('click',()=>{
+  window.location.href='priority.html';
+});
+</script>
+</body>
+</html>
