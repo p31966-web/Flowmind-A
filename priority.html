@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FlowMind — ลำดับงาน</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <h2>ลำดับงานที่ควรทำ</h2>
+    <div id="alertsContainer"></div>
+    <div id="priorityList"></div>
+    <div class="row" style="margin-top:10px">
+      <button onclick="window.location.href='tasks.html'" class="btn secondary">ย้อนกลับแก้งาน</button>
+      <button onclick="window.location.href='schedule.html'" class="btn">ย้อนกลับแก้ตารางเรียน</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function renderPriority(){
+  const container=document.getElementById('priorityList');
+  const alerts=document.getElementById('alertsContainer');
+  container.innerHTML=''; alerts.innerHTML='';
+  let tasks=JSON.parse(localStorage.getItem('flow_tasks')||'[]');
+  if(!tasks.length){ container.innerHTML='<div class="small">ไม่มีงาน</div>'; return; }
+  tasks.sort((a,b)=> new Date(a.due)-new Date(b.due) || b.diff-a.diff);
+  const now=Date.now();
+  const ONE_DAY=24*60*60*1000, THREE_DAYS=3*ONE_DAY;
+  let urgentCount=0, soonCount=0;
+  tasks.forEach(t=>{
+    const diffTime=new Date(t.due+'T23:59:59').getTime()-now;
+    if(diffTime<=0 || diffTime<=ONE_DAY) urgentCount++;
+    else if(diffTime<=THREE_DAYS) soonCount++;
+  });
+  if(urgentCount) alerts.innerHTML+=`<div class="notice">🔴 มี ${urgentCount} งานใกล้กำหนด</div>`;
+  if(soonCount) alerts.innerHTML+=`<div class="notice" style="background:#fff7ed;border-color:#ffd8a8;color:#92400e">🟡 มี ${soonCount} งานจะถึงกำหนดใน 3 วัน</div>`;
+  tasks.forEach((t,i)=>{
+    const div=document.createElement('div');
+    div.className='task-item';
+    div.innerHTML=`<div><strong>${i+1}. ${t.title}</strong> — ${t.subject}<br><span class="small">ครบกำหนด: ${t.due} | ความยาก: ${t.diff}</span></div>
+    <div><button onclick="markDone(${i})" class="btn" style="background:#16a34a">เสร็จแล้ว</button>
+    <button onclick="deleteTask(${i})" class="btn" style="background:#ef4444">ลบ</button></div>`;
+    container.appendChild(div);
+  });
+}
+
+function markDone(i){
+  let tasks=JSON.parse(localStorage.getItem('flow_tasks')||'[]');
+  tasks.splice(i,1);
+  localStorage.setItem('flow_tasks',JSON.stringify(tasks));
+  renderPriority();
+}
+function deleteTask(i){ markDone(i); }
+
+renderPriority();
+</script>
+</body>
+</html>
+
