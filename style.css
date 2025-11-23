@@ -1,0 +1,21 @@
+body{margin:0;font-family:Inter,system-ui,Arial;background:#f5f9ff;color:#0f172a;padding:12px}
+.container{max-width:920px;margin:0 auto}
+.card{background:#fff;padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,0.06);margin-bottom:12px}
+h1,h2,h3{margin:0 0 8px}
+.lead{color:#6b7280;margin-bottom:12px}
+input,select,button{font-size:16px;padding:8px;border-radius:8px;border:1px solid #e6eef9}
+input[type=text]{width:100%;box-sizing:border-box;margin-bottom:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:#2563eb;color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer}
+.btn.secondary{background:#6b7280}
+.small{font-size:13px;color:#6b7280}
+.day-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.day{padding:10px;border-radius:8px;border:1px solid #e6eef9;background:#fbfeff}
+.task-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.task-row input, .task-row select{flex:1;min-width:120px}
+.task-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;border:1px solid #e2e8f0;background:#f8fbff;margin-bottom:8px}
+.notice{padding:8px;border-radius:8px;background:#fff4e5;border:1px solid #ffd8a8;color:#92400e;margin-bottom:10px}
+@media(min-width:700px){
+  .day-grid{grid-template-columns:repeat(3,1fr)}
+  .task-row input[type=text]{width:30%}
+}
